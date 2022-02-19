@@ -87,11 +87,11 @@ function go(event) {
         tan.style.border = "none";
         pink.style.border = "none";
 
-        let left1 = parseInt(flower.style.left);
+        // let left1 = parseInt(flower.style.left);
         // alert(left1);
 
         if (onField(tan, left, top)) {
-            if (breed == "tan" && tan.style.left <= left1 && tan.style.top <= flower.style.top) {
+            if (breed == "tan") {
                 irisesState[flower.id] = true;
             }
             else {
@@ -101,7 +101,7 @@ function go(event) {
         }
 
         if (onField(pink, left, top)) {
-            if (breed == "pink" && tan.style.left <= left1 && tan.style.top <= flower.style.top) {
+            if (breed == "pink") {
                 irisesState[flower.id] = true;
             }
             else {
@@ -136,17 +136,23 @@ function getCoords(elem) {
 }
 
 function check() {
-    let score = 0;
-    for (let key in menu) {
-        if (menu[key] == false) {
-            alert("Error");
-            score++;
+    let res = false;
+    for (let i = 0; i < irisesState.length; i++) {
+        if (irisesState[i] == false) {
+            res = false;
+            break;
         }
+
+    }
+    console.log(irisesState);
+
+    if (res == true) {
+        state.innerHTML = "OK!";
+    }
+    else {
+        state.innerHTML = "Error!";
     }
 
-    if (score = 0) {
-        alert("Ok")
-    }
     // Проверка, все ли ирисы на своем поле
     // реализовать - если в массиве irisesState хотя бы одно значение false, то выдавать сообщение "Error", если все true - то "OK". Сообщение писать в state
 }
