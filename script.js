@@ -1,5 +1,6 @@
 let tan = document.getElementById("tan");
 let pink = document.getElementById("pink");
+let purple = document.getElementById("purple");
 let showCoords = document.getElementById("showCoords");
 let state = document.getElementById("state");
 
@@ -15,7 +16,7 @@ for (let i = 0; i < irises.length; i++) {
     irisesState[irises[i].id] = false;
 }
 
-console.log(irisesState);
+// console.log(irisesState);
 
 //проверка, попадает ли на поле f цветок с координатами left, top
 function onField(f, left, top) {
@@ -26,7 +27,7 @@ function onField(f, left, top) {
         left < field.left + field.width &&
         top > field.top &&
         top < field.top + field.height &&
-        (f == tan || f == pink)
+        (f == tan || f == pink || f == purple)
     )
         return true;
     return false;
@@ -56,18 +57,34 @@ function go(event) {
             if (breed == "tan") {
                 tan.style.border = "2px solid green";
                 pink.style.border = "none";
+                purple.style.border = "none";
             } else {
                 tan.style.border = "2px solid red";
                 pink.style.border = "none";
+                purple.style.border = "none";
             }
         }
         if (onField(pink, left, top)) {
             if (breed == "pink") {
                 pink.style.border = "2px solid green";
                 tan.style.border = "none";
+                purple.style.border = "none";
             } else {
                 pink.style.border = "2px solid red";
                 tan.style.border = "none";
+                purple.style.border = "none";
+            }
+        }
+
+        if (onField(purple, left, top)) {
+            if (breed == "purple") {
+                purple.style.border = "2px solid green";
+                tan.style.border = "none";
+                pink.style.border = "none";
+            } else {
+                purple.style.border = "2px solid red";
+                tan.style.border = "none";
+                pink.style.border = "none";
             }
         }
     }
@@ -86,9 +103,13 @@ function go(event) {
         irisesState[flower.id] = false; // сброс состояния текущего цветка
         tan.style.border = "none";
         pink.style.border = "none";
+        purple.style.border = "none";
 
         // let left1 = parseInt(flower.style.left);
         // alert(left1);
+
+        let left = parseInt(flower.style.left);
+        let top = parseInt(flower.style.top);
 
         if (onField(tan, left, top)) {
             if (breed == "tan") {
@@ -109,11 +130,20 @@ function go(event) {
             }
         }
 
+        if (onField(purple, left, top)) {
+            if (breed == "purple") {
+                irisesState[flower.id] = true;
+            }
+            else {
+                irisesState[flower.id] = false;
+            }
+        }
+
         //..... проверить поле pink
 
         //реализовать - если цветок находится на своем поле, то  irisesState[flower.id] = true, иначе - irisesState[flower.id] = false
 
-        console.log(irisesState);
+        // console.log(irisesState);
         document.onmousemove = null;
         flower.onmouseup = null;
     }
@@ -136,21 +166,30 @@ function getCoords(elem) {
 }
 
 function check() {
-    let res = false;
-    for (let i = 0; i < irisesState.length; i++) {
-        if (irisesState[i] == false) {
-            res = false;
+    let res1 = false;
+    // for (let i = 0; i < irisesState.length; i++) {
+    for (let key in irisesState) {
+        if (irisesState[key] == false) {
+            res1 = false;
+            // console.log(irisesState[key]);
+            state.style.color = "red";
+            state.style.backgroundColor = "pink";
             break;
+        }
+        else {
+            res1 = true;
         }
 
     }
-    console.log(irisesState);
+    // console.log(irisesState[0]);
 
-    if (res == true) {
-        state.innerHTML = "OK!";
+    if (res1 == false) {
+        state.innerHTML = "Error!";
     }
     else {
-        state.innerHTML = "Error!";
+        state.style.color = "green";
+        state.style.backgroundColor = "lightgreen";
+        state.innerHTML = "OK";
     }
 
     // Проверка, все ли ирисы на своем поле
